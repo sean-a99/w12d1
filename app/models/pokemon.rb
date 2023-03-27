@@ -33,10 +33,11 @@ class Pokemon < ApplicationRecord
         'steel'
       ].sort.freeze
 
-    validates :image_url, null: false 
+    validates :image_url, presence: true
     validates :captured, inclusion: [true, false]
     validates :name, uniqueness: { message: "name: '%{value}' is already taken" }, length: { in: 3..255 }
-    validates :number, :attack, :defense, numericality: { in 0..100 }
+    validates :attack, :defense, numericality: { in: 0..100 }
+    validates :number, numericality: {in: 1..200}
     validates :poke_type, inclusion: { in: TYPES, message: "'%{value}' is not valid" }
 
     has_many :items,

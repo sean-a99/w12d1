@@ -13,4 +13,8 @@
 #
 class Item < ApplicationRecord
   belongs_to :pokemon
+
+  validates :name, length: { in 1..255 }
+  validates :price, numericality: { greater_than_or_equal_to: 0 }
+  validates :happiness, :image_url, :pokemon_id, null: false
 end

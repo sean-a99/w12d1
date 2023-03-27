@@ -10,9 +10,36 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_27_184144) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_27_190824) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "items", force: :cascade do |t|
+    t.bigint "pokemon_id", null: false
+    t.string "name", null: false
+    t.integer "price", null: false
+    t.integer "happiness", null: false
+    t.string "image_url", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pokemon_id"], name: "index_items_on_pokemon_id"
+  end
+
+  create_table "moves", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_moves_on_name", unique: true
+  end
+
+  create_table "poke_moves", force: :cascade do |t|
+    t.bigint "pokemon_id", null: false
+    t.bigint "move_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["move_id"], name: "index_poke_moves_on_move_id"
+    t.index ["pokemon_id", "move_id"], name: "index_poke_moves_on_pokemon_id_and_move_id", unique: true
+  end
 
   create_table "pokemons", force: :cascade do |t|
     t.integer "number", null: false
@@ -28,4 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_27_184144) do
     t.index ["number"], name: "index_pokemons_on_number", unique: true
   end
 
+  add_foreign_key "items", "pokemons"
+  add_foreign_key "poke_moves", "moves"
+  add_foreign_key "poke_moves", "pokemons"
 end
